@@ -6,7 +6,7 @@ print("The natives want their camel back and are chasing you down! Survive your 
 
 miles_native = -20
 miles_traveled = 0
-distance = miles_traveled - miles_native
+distance = 20
 fatigue = 0
 thirst = 0
 water = 3
@@ -23,15 +23,17 @@ while not done:
         print("Good bye!!")
         done = True
     elif direction == "e" or direction == "E":
-        print("Miles traveled:", miles_traveled,"The natives are",miles_native-(2*miles_native),"miles behind you. Fatigue: ", fatigue, "Thirst: ", thirst, "Water: ", water)
+        print("Miles traveled:", miles_traveled,"The natives are",distance,"miles behind you. Fatigue: ", fatigue, "Thirst: ", thirst, "Water: ", water)
     elif direction == "d" or direction == "D":
         print("the camel is happy")
         fatigue = 0
         miles_native = miles_native + random.randint(7,14)
+        distance = miles_traveled - miles_native
     elif direction == "c" or direction == "C":
         thirst = thirst + random.randint(1,3)
         fatigue = fatigue + random.randint(1,3)
         miles_native = miles_native + random.randint(7, 14)
+        distance = miles_traveled - miles_native
         miles_traveled = miles_traveled + random.randint(10, 20)
         print("miles trveled is", miles_traveled)
     elif direction == "b" or direction == "B":
@@ -39,6 +41,7 @@ while not done:
         fatigue = fatigue + 1
         miles_native = miles_native + random.randint(7, 14)
         miles_traveled = miles_traveled + random.randint(5, 12)
+        distance = miles_traveled - miles_native
         print("miles trveled is", miles_traveled)
     elif direction == "a" or direction == "A":
         if water > 0:
@@ -47,6 +50,7 @@ while not done:
         else:
             print("error: out of water")
         miles_native = miles_native + random.randint(7, 14)
+        distance = miles_traveled - miles_native
     if random.randint(1,20) == random.randint(1,20):
         print("you faund a oasis")
         water = 3
@@ -64,7 +68,7 @@ while not done:
         done = True
     elif distance < 15:
         print("The natives are getting close!")
-    if miles_native > miles_traveled or miles_traveled < miles_native:
+    if distance < 0:
         print("The natives catch you")
         done = True
     if miles_traveled > 200:
