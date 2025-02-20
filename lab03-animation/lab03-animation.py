@@ -130,17 +130,25 @@ class BeachScene(arcade.Window):
 
     def draw_waves(self):
         """Dibuja múltiples líneas de olas que se desvanecen al acercarse a la arena."""
-        for i in range(-1, int(SCREEN_WIDTH / WAVE_STEP) + 2):
+        for i in range(-1, int(SCREEN_WIDTH / WAVE_STEP) + 2):  # Ajusta las olas en horizontal
             x_start = i * WAVE_STEP - self.wave_offset
             x_mid = x_start + WAVE_STEP / 2
             x_end = x_start + WAVE_STEP
-            y_base = 250
+            y_base = 250  # Altura base de las olas
 
-            # Cálculo del desvanecimiento de las olas cerca de la orilla
-            fade = max(0, 255 - (y_base - 200) * 5)
+            # Cada ola se dibuja y desvanecerá progresivamente al acercarse al terreno de la arena (Y=200)
+            fade_factor = max(0, WAVE_FADE_DISTANCE - (y_base - 200))  # Basado en distancia vertical
+            alpha = int(255 * (fade_factor / WAVE_FADE_DISTANCE))  # Ajusta la opacidad
 
-            arcade.draw_line(x_start, y_base, x_mid, y_base + 20, (64, 224, 208, fade), 2)
-            arcade.draw_line(x_mid, y_base + 20, x_end, y_base, (64, 224, 208, fade), 2)
+            # Asegurar que la opacidad esté entre 0 y 255
+            alpha = max(0, min(alpha, 255))
+
+            # Color de la ola con transparencia aplicada
+            wave_color = (64, 224, 208, alpha)
+
+            # Dibujar cada segmento de la onda
+            arcade.draw_line(x_start, y_base, x_mid, y_base + 20, wave_color, 2)
+            arcade.draw_line(x_mid, y_base + 20, x_end, y_base, wave_color, 2)
 
     def draw_umbrellas_and_towels(self):
         """Dibuja sombrillas y toallas."""
