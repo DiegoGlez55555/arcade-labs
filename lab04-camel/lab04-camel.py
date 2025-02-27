@@ -56,16 +56,16 @@ while not done:
         water = 3
         thirst = 0
         fatigue = 0
-    if thirst > 4:
-        print("you are thirsty")
-    elif thirst > 6:
+    if thirst > 6:
         print("you died of thirst")
         done = True
-    if fatigue > 5:
-        print("Your camel is fatigue")
-    elif fatigue > 8:
+    elif thirst > 4:
+        print("you are thirsty")
+    if fatigue > 8:
         print("Your camel died of fatigue")
         done = True
+    elif fatigue > 5:
+        print("Your camel is fatigue")
     elif distance < 15:
         print("The natives are getting close!")
     if distance < 0:
