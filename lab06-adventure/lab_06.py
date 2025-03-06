@@ -131,7 +131,7 @@ def main():
 
     # Inicializar variables del dragón
     dragon = {
-        "vida": 100,
+        "vida": 75,
         "ataque_reducido": False
     }
 
