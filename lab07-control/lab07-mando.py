@@ -3,7 +3,8 @@ import arcade
 # --- Constantes ---
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-MOVEMENT_SPEED = 5  # Velocidad de movimiento del stickman principal
+MOVEMENT_SPEED = 5  # Velocidad de movimiento usando teclado o ratón
+JOYSTICK_SPEED = 5  # Velocidad base para movimiento con joystick
 
 
 class MyGame(arcade.Window):
@@ -11,7 +12,7 @@ class MyGame(arcade.Window):
 
     def __init__(self):
         """ Inicializador """
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mover al Stickman con Fondo y Objetos")
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mover al Stickman con Teclado, Ratón y Joystick")
 
         # Configurar el color de fondo
         arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
@@ -19,6 +20,17 @@ class MyGame(arcade.Window):
         # Posición inicial del stickman principal
         self.stickman_x = 400
         self.stickman_y = 300
+
+        # Detectar joystick
+        self.joystick = None
+        joysticks = arcade.get_joysticks()
+
+        if joysticks:
+            self.joystick = joysticks[0]  # Usamos el primer joystick detectado
+            self.joystick.open()
+            print(f"Joystick detectado: {self.joystick.device.name}")
+        else:
+            print("No se detectó ningún joystick conectado.")
 
     def on_draw(self):
         """ Método para renderizar/dibujar todo en pantalla """
@@ -41,6 +53,35 @@ class MyGame(arcade.Window):
             self.stickman_x -= MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.stickman_x += MOVEMENT_SPEED
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        """
+        Manejo del movimiento del ratón.
+        Actualiza las coordenadas del stickman para que sigan al ratón.
+        """
+        self.stickman_x = x
+        self.stickman_y = y
+
+    def on_joybutton_press(self, joystick, button):
+        """
+        Evento cuando se presiona un botón del joystick.
+        """
+        print(f"Botón presionado {button} en el joystick: {joystick.device.name}")
+        # Ejemplo: Si se presiona el botón 0, reinicia la posición del stickman
+        if button == 0:
+            self.stickman_x = SCREEN_WIDTH // 2
+            self.stickman_y = SCREEN_HEIGHT // 2
+
+    def on_joyaxis_motion(self, joystick, axis, value):
+        """
+        Evento cuando se mueven los ejes del joystick.
+        - El eje 0 generalmente es el eje X de la palanca izquierda.
+        - El eje 1 generalmente es el eje Y de la palanca izquierda.
+        """
+        if axis == "x":  # Eje X del joystick
+            self.stickman_x += value * JOYSTICK_SPEED
+        elif axis == "y":  # Eje Y del joystick (invertido, arriba es negativo)
+            self.stickman_y -= value * JOYSTICK_SPEED
 
     def draw_background(self):
         """ Dibuja el fondo estático (playa, olas, sol, sombrillas, etc.) """
@@ -110,7 +151,8 @@ class MyGame(arcade.Window):
 
         # Dibujar stickmans adicionales
         self.draw_stickman(150, 220)  # Stickman 1
-        self.draw_stickman(375, 175)  # Stickman 2
+        self.draw_stickman(400, 260)  # Stickman 2
+        self.draw_stickman(375, 175)  # Stickman 3
 
     def draw_stickman(self, x, y):
         """ Dibuja un stickman en la posición (x, y) """

@@ -42,6 +42,15 @@ class MyGame(arcade.Window):
         elif key == arcade.key.RIGHT:
             self.stickman_x += MOVEMENT_SPEED
 
+    def on_mouse_motion(self, x, y, dx, dy):
+        """
+        Manejo del movimiento del ratón.
+        Actualiza las coordenadas del stickman para que sigan al ratón.
+        """
+        self.stickman_x = x
+        self.stickman_y = y
+
+
     def draw_background(self):
         """ Dibuja el fondo estático (playa, olas, sol, sombrillas, etc.) """
         # Dibujar la playa
