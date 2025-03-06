@@ -123,7 +123,7 @@ class MyGame(arcade.Window):
         # Si no quedan pelotas, finalizar el juego
         if not self.balls and self.lives > 0:
             self.add_new_ball()
-        elif not self.balls and self.lives <= 0:
+        elif self.lives <= 0:
             self.game_over = True
 
     def add_new_ball(self):
